@@ -8,16 +8,10 @@ from langgraph.graph import StateGraph, START, END
 
 from langchain_openai import ChatOpenAI
 from langchain_community.tools.tavily_search import TavilySearchResults
-from src.config import OPENROUTER_API_KEY, BASE_URL
+from src.config import OPENROUTER_API_KEY, BASE_URL, get_secret
 from src.schemas import CompanyProfile, SearchPlan
 
 
-
-if not OPENROUTER_API_KEY:
-    raise ValueError(
-        "OPENROUTER_API_KEY is missing! "
-        "Please add it to Streamlit App Settings -> Secrets or your local .env file."
-    )
 
 class FinancialAgentState(TypedDict):
     input_file: str
@@ -34,22 +28,25 @@ class FinancialAgentState(TypedDict):
     output_path: str
     status_summary: str
 
-# model for calcs
-heavy_llm = ChatOpenAI(
-    api_key=OPENROUTER_API_KEY,
-    base_url=BASE_URL,
-    model="gpt-4o",
-    temperature=0.1
-)
-# Alternative: claude-3-7-sonnet-20250219 or o3-mini
-
-# 2. Fast/economic model: Query planning & keyword generation
-fast_llm = ChatOpenAI(
-    api_key=OPENROUTER_API_KEY,
-    base_url=BASE_URL,
-    model="openai/gpt-4o-mini" ,
-    temperature=0.3
-)
+# Helper to fetch active LLMs dynamically when called
+def get_llms():
+    api_key = get_secret("OPENROUTER_API_KEY")
+    if not api_key:
+        raise ValueError("OPENROUTER_API_KEY is missing. Check Streamlit App Settings -> Secrets.")
+    
+    heavy = ChatOpenAI(
+        api_key=api_key,
+        base_url=BASE_URL,
+        model="openai/gpt-4o",
+        temperature=0.0
+    )
+    fast = ChatOpenAI(
+        api_key=api_key,
+        base_url=BASE_URL,
+        model="openai/gpt-4o-mini",
+        temperature=0.2
+    )
+    return heavy, fast
 
 search_tool = TavilySearchResults(max_results=3)
 

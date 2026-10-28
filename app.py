@@ -1,6 +1,12 @@
 import streamlit as st
 import pandas as pd
 from src.graph import build_financial_workflow
+from src.config import get_secret
+
+
+if not get_secret("OPENROUTER_API_KEY"):
+    st.error("⚠️ OPENROUTER_API_KEY is not detected. Please add it to Streamlit Settings -> Secrets.")
+    st.stop()
 
 st.set_page_config(page_title="Financial Intelligence Agent", layout="wide")
 
