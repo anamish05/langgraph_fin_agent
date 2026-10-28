@@ -12,6 +12,13 @@ from src.config import OPENROUTER_API_KEY, BASE_URL
 from src.schemas import CompanyProfile, SearchPlan
 
 
+
+if not OPENROUTER_API_KEY:
+    raise ValueError(
+        "OPENROUTER_API_KEY is missing! "
+        "Please add it to Streamlit App Settings -> Secrets or your local .env file."
+    )
+
 class FinancialAgentState(TypedDict):
     input_file: str
     task_description: str
