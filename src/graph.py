@@ -69,6 +69,7 @@ def parse_input_node(state: FinancialAgentState) -> Dict[str, Any]:
 def plan_research_node(state: FinancialAgentState) -> Dict[str, Any]:
     """Generates targeted search queries for each company."""
     print("🔹 [2/4] Planning qualitative search queries...")
+    _, fast_llm = get_llms()
     all_queries = []
     
     structured_planner = fast_llm.with_structured_output(SearchPlan)
@@ -91,6 +92,7 @@ def plan_research_node(state: FinancialAgentState) -> Dict[str, Any]:
 def web_research_node(state: FinancialAgentState) -> Dict[str, Any]:
     """Runs web searches and extracts structured qualitative profiles."""
     print("🔹 [3/4] Searching web for qualitative profiles and performance...")
+    heavy_llm , _ = get_llms()
     profiles = []
 
     structured_profiler = heavy_llm.with_structured_output(CompanyProfile)
