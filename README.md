@@ -2,6 +2,8 @@
 
 This notebook implements an automated, multi-agent qualitative research workflow using **LangGraph**, **Tavily Search**, and structured **Pydantic** extraction schemas.
 
+Streamlit app to test: https://langgraphfinagent-y2knvkstgmxfxxbttgcaqc.streamlit.app/
+
 ---
 
 ### Workflow Objectives
