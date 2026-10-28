@@ -1,0 +1,13 @@
+# Environment secrets
+.env
+.env*.local
+
+# Python cache
+__pycache__/
+*.py[cod]
+.venv/
+env/
+
+# Temporary generated data
+temp_*.xlsx
+*_enriched.xlsx
